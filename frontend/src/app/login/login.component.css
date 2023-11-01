@@ -1,0 +1,17 @@
+/* login.component.css */
+
+/* Estilo para el contenedor principal */
+mat-card {
+    max-width: 300px; /* Ajusta el ancho según tus necesidades */
+    margin: 0 auto; /* Centra horizontalmente */
+    margin-top: 50px; /* Espacio en la parte superior */
+    padding: 20px; /* Espacio interior */
+    text-align: center; /* Centra el contenido dentro del card */
+  }
+  
+  /* Estilo para el botón de inicio de sesión */
+  button {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    margin-top: 20px; /* Espacio entre los campos de entrada y el botón */
+  }
+  

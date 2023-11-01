@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Login Usuario</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <mat-form-field>
+      <input matInput placeholder="Nombre de usuario">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="password" placeholder="Contraseña">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Tipea y busca aerolinea"
+        [formControl]="airlineControl"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let airline of filteredAirlines | async | slice : 0 : 3" [value]="airline.name">
+          {{ airline.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Iniciar sesión</button>
+  </mat-card-content>
+</mat-card>
