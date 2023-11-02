@@ -59,4 +59,8 @@ export class LoginComponent implements OnInit {
   onAirlineSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedAirlineName = event.option.viewValue;
   }
+
+  login() {
+      this.router.navigate(['/dashboard']);
+   }
 }

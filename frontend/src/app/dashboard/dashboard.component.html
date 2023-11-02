@@ -1,1 +1,31 @@
-<p>dashboard works!</p>
+<form [formGroup]="searchForm" (ngSubmit)="searchHotels()">
+    <mat-form-field>
+      <input matInput formControlName="city" placeholder="Ciudad">
+    </mat-form-field>
+  
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker1" formControlName="checkInDate" placeholder="Fecha de entrada">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" formControlName="checkOutDate" placeholder="Fecha de salida">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <input type="number" matInput formControlName="guests" placeholder="Huéspedes">
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Buscar</button>
+</form>
+
+<mat-card *ngFor="let hotel of hotels">
+    <mat-card-title>{{ hotel.name }}</mat-card-title>
+    <mat-card-content>
+      {{ hotel.description }}
+    </mat-card-content>
+</mat-card>
+
