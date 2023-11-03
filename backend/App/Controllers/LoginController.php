@@ -22,4 +22,11 @@ class LoginController
 
         echo json_encode($result);
     }
+
+    public function loginTest($parameters)
+    {
+        $loginProperties = $this->loginService->loginTest($parameters);
+        echo json_encode($loginProperties);
+
+    }
 }

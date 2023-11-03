@@ -9,12 +9,30 @@ class LoginService
     public function login()
     { 
         $URL = Config::get('API_URL') . self::SESSION_URI;
-        echo ''. $URL .'';
 
         $postData = [
             'session[airline]' => 'HAWAIIAN AIRLINES (HA)',
             'session[username]' => 'halucas',
             'session[password]' => '123456',
+        ];
+
+        $response = $this->makeApiRequest($URL, $postData);
+
+        return json_decode($response, true);
+    }
+
+    public function loginTest($parameters)
+    { 
+        $URL = Config::get('API_URL') . self::SESSION_URI;
+
+        $airline = $parameters['airline'];
+        $name = $parameters['username'];
+        $password = $parameters['password'];
+
+        $postData = [
+            'session[airline]' => $airline,
+            'session[username]' => $name,
+            'session[password]' => $password,
         ];
 
         $response = $this->makeApiRequest($URL, $postData);

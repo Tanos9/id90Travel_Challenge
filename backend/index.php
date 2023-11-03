@@ -35,6 +35,16 @@ Router::get('/login', function (Request $req, Response $res)
     $loginController->login();
 });
 
+Router::post('/logintest', function (Request $req, Response $res)
+{
+    $container = App::getContainer();
+    $loginService = $container->resolve('Services\LoginService');
+    $loginController = new LoginController($loginService);
+
+    $parameters = $req->getJSON();
+    $loginController->loginTest($parameters);
+});
+
 Router::get('/airlines/names', function (Request $req, Response $res)
 {
     $container = App::getContainer();

@@ -15,12 +15,14 @@ class Request
 
     public function getBody()
     {
-        if ($this->reqMethod !== 'POST') {
+        if ($this->reqMethod !== 'POST')
+        {
             return '';
         }
 
         $body = [];
-        foreach ($_POST as $key => $value) {
+        foreach ($_POST as $key => $value)
+        {
             $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
         }
 
@@ -29,16 +31,19 @@ class Request
 
     public function getJSON()
     {
-        if ($this->reqMethod !== 'POST') {
+        if ($this->reqMethod !== 'POST')
+        {
             return [];
         }
 
-        if (strcasecmp($this->contentType, 'application/json') !== 0) {
+        if (strcasecmp($this->contentType, 'application/json') !== 0)
+        {
             return [];
         }
 
         $content = trim(file_get_contents("php://input"));
-        $decoded = json_decode($content);
+        
+        $decoded = json_decode($content, true);
 
         return $decoded;
     }
