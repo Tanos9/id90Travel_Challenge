@@ -1,6 +1,6 @@
 <?php namespace App\Services;
-      use App\Lib\Config;
-      use App\Models\DTOs\AirlineDTO;
+
+use App\Lib\Config;
 
 class AirlinesService
 {

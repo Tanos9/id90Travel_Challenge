@@ -3,6 +3,7 @@
 use App\Core\Container;
 use App\Services\AirlinesService;
 use App\Services\HotelsService;
+use App\Services\LoginService;
 
 class App
 {
@@ -51,6 +52,14 @@ class App
             function ()
             {
                 return new AirlinesService();
+            }
+        );
+
+        $container->bind(
+            "Services\LoginService",
+            function ()
+            {
+                return new LoginService();
             }
         );
 
