@@ -1,6 +1,7 @@
 <?php namespace App\Lib;
 
 use App\Core\Container;
+use App\Services\AirlinesService;
 use App\Services\HotelsService;
 
 class App
@@ -42,6 +43,14 @@ class App
             function ()
             {
                 return new HotelsService();
+            }
+        );
+
+        $container->bind(
+            "Services\AirlinesService",
+            function ()
+            {
+                return new AirlinesService();
             }
         );
 

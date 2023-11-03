@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+use App\Controllers\AirlinesController;
 use App\Lib\App;
 use App\Lib\Router;
 use App\Lib\Request;
@@ -21,4 +22,11 @@ Router::get('/post/([0-9]*)', function (Request $req, Response $res) {
         'post' =>  ['id' => $req->params[0]],
         'status' => 'ok'
     ]);
+});
+
+Router::get('/airlines/names', function (Request $req, Response $res) {
+    $container = App::getContainer();
+    $airlinesService = $container->resolve('Services\AirlinesService');
+    $home = new AirlinesController($airlinesService);
+    $home->getAirlinesNames();
 });
