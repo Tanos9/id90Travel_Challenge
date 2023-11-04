@@ -25,8 +25,6 @@ class LoginController
 
     public function loginTest($parameters)
     {
-        $loginProperties = $this->loginService->loginTest($parameters);
-        echo json_encode($loginProperties);
-
+        return $this->loginService->loginTest($parameters);
     }
 }

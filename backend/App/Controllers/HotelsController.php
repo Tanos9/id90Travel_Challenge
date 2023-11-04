@@ -16,4 +16,9 @@ class HotelsController
         echo 'First Example with injected service call: ';
         echo $this->hotelsService->getHotels();
     }
+
+    public function getAvailableHotels($parameters)
+    { 
+        return $this->hotelsService->getAvailableHotels($parameters);
+    }
 }

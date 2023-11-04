@@ -19,6 +19,14 @@ Router::get('/', function ()
     $hotelsController->indexAction(); 
 });
 
+Router::get('/hotels', function (Request $req, Response $res)
+{
+    $container = App::getContainer();
+    $hotelsService = $container->resolve('Services\HotelsService');
+    $hotelsController = new HotelsController($hotelsService);
+    $res->toJSON($hotelsController->getAvailableHotels($req->params)); 
+});
+
 Router::get('/post/([0-9]*)', function (Request $req, Response $res)
 {
     $res->toJSON([
@@ -42,7 +50,7 @@ Router::post('/logintest', function (Request $req, Response $res)
     $loginController = new LoginController($loginService);
 
     $parameters = $req->getJSON();
-    $loginController->loginTest($parameters);
+    $res->toJSON($loginController->loginTest($parameters));
 });
 
 Router::get('/airlines/names', function (Request $req, Response $res)

@@ -1,4 +1,5 @@
-<?php namespace App\Lib;
+<?php
+namespace App\Lib;
 
 class Router
 {
@@ -20,19 +21,40 @@ class Router
         self::on($route, $callback);
     }
 
+    //TODO: delete after testing
+    // public static function on($regex, $cb)
+    // {
+    //     $params = $_SERVER['REQUEST_URI'];
+    //     $params = (stripos($params, "/") !== 0) ? "/" . $params : $params;
+    //     $regex = str_replace('/', '\/', $regex);
+    //     $is_match = preg_match('/^' . ($regex) . '$/', $params, $matches, PREG_OFFSET_CAPTURE);
+
+    //     if ($is_match)
+    //     {
+    //         array_shift($matches);
+    //         $params = array_map(function ($param) {
+    //             return $param[0];
+    //         }, $matches);
+    //         $cb(new Request($params), new Response());
+    //     }
+    // }
+
     public static function on($regex, $cb)
     {
-        $params = $_SERVER['REQUEST_URI'];
-        $params = (stripos($params, "/") !== 0) ? "/" . $params : $params;
-        $regex = str_replace('/', '\/', $regex);
-        $is_match = preg_match('/^' . ($regex) . '$/', $params, $matches, PREG_OFFSET_CAPTURE);
+        $url = parse_url($_SERVER['REQUEST_URI']);
+        $path = $url['path'];
 
-        if ($is_match) {
+        $path = (stripos($path, "/") !== 0) ? "/" . $path : $path;
+        $regex = str_replace('/', '\/', $regex);
+        $is_match = preg_match('/^' . ($regex) . '$/', $path, $matches, PREG_OFFSET_CAPTURE);
+
+        if ($is_match)
+        {
             array_shift($matches);
-            $params = array_map(function ($param) {
-                return $param[0];
-            }, $matches);
+            parse_str($url['query'], $params);
+
             $cb(new Request($params), new Response());
         }
     }
+
 }
