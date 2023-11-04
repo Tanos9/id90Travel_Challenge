@@ -1,35 +1,36 @@
 <form [formGroup]="searchForm" (ngSubmit)="searchHotels()">
+    <h3>Search Hotels all over the world</h3>
     <mat-form-field>
-      <input matInput formControlName="city" placeholder="Ciudad">
+      <input matInput formControlName="city" placeholder="Where are you going?">
     </mat-form-field>
   
     <mat-form-field>
-      <input matInput [matDatepicker]="picker1" formControlName="checkInDate" placeholder="Fecha de entrada">
+      <input matInput [matDatepicker]="picker1" formControlName="checkInDate" placeholder="Check-In">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
   
     <mat-form-field>
-      <input matInput [matDatepicker]="picker2" formControlName="checkOutDate" placeholder="Fecha de salida">
+      <input matInput [matDatepicker]="picker2" formControlName="checkOutDate" placeholder="Check-Out">
       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
   
     <mat-form-field>
-      <input type="number" matInput formControlName="guests" placeholder="Huéspedes">
+      <input type="number" matInput formControlName="guests" placeholder="Guests">
     </mat-form-field>
   
-    <button mat-raised-button color="primary" type="submit">Buscar</button>
+    <button mat-raised-button color="primary" type="submit">Search</button>
 </form>
 
 <mat-card *ngFor="let hotel of hotels">
     <mat-card-title>{{ hotel.name }}</mat-card-title>
     <mat-card-content>
-      {{ hotel.description }}
-      {{ hotel.checkin }}
-      {{ hotel.checkout }}
-      {{ hotel.type }}
-      {{ hotel.total | currency }}
+      <p>{{ hotel.description }}</p>
+      <p>{{ hotel.checkin }}</p>
+      <p>{{ hotel.checkout }}</p>
+      <p>{{ hotel.type }}</p>
+      <p>{{ hotel.total | currency }}</p>
     </mat-card-content>
 </mat-card>
 

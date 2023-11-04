@@ -51,11 +51,8 @@ export class DashboardComponent
     const checkInDateFormatted = this.datePipe.transform(formData.checkInDate, 'yyyy-MM-dd');
     const checkOutDateFormatted = this.datePipe.transform(formData.checkOutDate, 'yyyy-MM-dd');
     const city = formData.city?.trim().replaceAll(' ', '');
-    const guests = formData.guests?.trim().replaceAll(' ', '');
-    return this.API_URL +=
-      `destination=${city}
-      &guests=${guests}
-      &checkin=${checkInDateFormatted}
-      &checkout=${checkOutDateFormatted}`;
+    const guests = formData.guests?.toString().trim().replaceAll(' ', '');
+
+    return this.API_URL += `destination=${city}&guests=${guests}&checkin=${checkInDateFormatted}&checkout=${checkOutDateFormatted}`;
   }
 }
