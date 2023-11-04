@@ -43,9 +43,7 @@ export class DashboardComponent
         .get(apiUrl)
         .subscribe((response: any) =>
         {
-          console.log("Se ejecuto el RQ");
-          console.log(response);
-          this.hotels = response.hotels;
+          this.hotels = response;
         });
     }
      else
