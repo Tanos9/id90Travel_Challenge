@@ -13,8 +13,28 @@ class HotelsService
     public function getAvailableHotels($parameters)
     {
         $URL = self::buildAvailableHotelsURL($parameters);
+        $hotelsResponse = json_decode($this->makeApiRequest($URL), true);
 
-        return $this->makeApiRequest($URL);
+        return self::filterHotelsProperties($hotelsResponse);
+    }
+
+    private function filterHotelsProperties($hotelsResponse)
+    {
+        $hotels = $hotelsResponse['hotels'] ?? [];
+
+        return array_map(function ($hotel) {
+            return [
+                'id' => $hotel['id'],
+                'name' => $hotel['name'],
+                'description' => $hotel['location_description'],
+                'checkin' => $hotel['checkin'],
+                'checkout' => $hotel['checkout'],
+                'review_rating' => $hotel['review_rating'],
+                'distance' => $hotel['distance'],
+                'total' => $hotel['total'],
+                'type' => $hotel['accommodation_type']['type']
+            ];
+        }, $hotels);
     }
 
     private function buildAvailableHotelsURL($parameters)

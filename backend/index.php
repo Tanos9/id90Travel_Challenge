@@ -19,7 +19,7 @@ Router::get('/', function ()
     $hotelsController->indexAction(); 
 });
 
-Router::get('/hotels', function (Request $req, Response $res)
+Router::get('/api/hotels', function (Request $req, Response $res)
 {
     $container = App::getContainer();
     $hotelsService = $container->resolve('Services\HotelsService');
