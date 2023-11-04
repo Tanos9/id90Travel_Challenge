@@ -1,29 +1,58 @@
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
-  searchForm: FormGroup;
+export class DashboardComponent
+{
+  public searchForm = new FormGroup(
+  {
+    city: new FormControl('', [Validators.required]),
+    guests: new FormControl('', [Validators.required]),
+    checkInDate: new FormControl('', [Validators.required]),
+    checkOutDate: new FormControl('', [Validators.required]),
+  });
 
   hotels: any[] = [];
 
-searchHotels() {
-  this.hotels = [
-    { name: 'Hotel 1', description: 'Descripción del Hotel 1' },
-    { name: 'Hotel 2', description: 'Descripción del Hotel 2' },
-  ];
-}
-
-  constructor(private fb: FormBuilder) {
-    this.searchForm = this.fb.group({
-      city: [''],
-      checkInDate: [''],
-      checkOutDate: [''],
-      guests: [''],
-    });
+  
+  constructor(
+  private _fb: FormBuilder,
+  private _httpClient: HttpClient,
+  private datePipe: DatePipe)
+  {
   }
+
+  searchHotels() {
+    if (this.searchForm.valid)
+    {
+      const formData = this.searchForm.value;
+  
+      const checkInDateFormatted = this.datePipe.transform(formData.checkInDate, 'yyyy-MM-dd');
+      const checkOutDateFormatted = this.datePipe.transform(formData.checkOutDate, 'yyyy-MM-dd');
+  
+      // Construir la URL de la API con los datos del formulario
+      const apiUrl = `/api/hotels?destination=${formData.city}&guests=${formData.guests}&checkin=${checkInDateFormatted}&checkout=${checkOutDateFormatted}`;
+  
+      this._httpClient
+        .get(apiUrl)
+        .subscribe((response: any) =>
+        {
+          console.log("Se ejecuto el RQ");
+          console.log(response);
+          this.hotels = response.hotels;
+        });
+    }
+     else
+    {
+      
+    }
+  }
+  
+
 }
