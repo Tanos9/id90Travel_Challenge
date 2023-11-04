@@ -26,6 +26,10 @@
     <mat-card-title>{{ hotel.name }}</mat-card-title>
     <mat-card-content>
       {{ hotel.description }}
+      {{ hotel.checkin }}
+      {{ hotel.checkout }}
+      {{ hotel.type }}
+      {{ hotel.total | currency }}
     </mat-card-content>
 </mat-card>
 

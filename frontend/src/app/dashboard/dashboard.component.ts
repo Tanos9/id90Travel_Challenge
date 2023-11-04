@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class DashboardComponent
 {
+  private API_URL = '/api/hotels?';
   public searchForm = new FormGroup(
   {
     city: new FormControl('', [Validators.required]),
@@ -19,8 +20,7 @@ export class DashboardComponent
   });
 
   hotels: any[] = [];
-
-  
+    
   constructor(
   private _fb: FormBuilder,
   private _httpClient: HttpClient,
@@ -29,23 +29,15 @@ export class DashboardComponent
   }
 
   searchHotels() {
+    this.hotels = [];
     if (this.searchForm.valid)
     {
-      const formData = this.searchForm.value;
-  
-      const checkInDateFormatted = this.datePipe.transform(formData.checkInDate, 'yyyy-MM-dd');
-      const checkOutDateFormatted = this.datePipe.transform(formData.checkOutDate, 'yyyy-MM-dd');
-  
-      // Construir la URL de la API con los datos del formulario
-      const apiUrl = `/api/hotels?destination=${formData.city}&guests=${formData.guests}&checkin=${checkInDateFormatted}&checkout=${checkOutDateFormatted}`;
-  
+      const URL = this.buildAvailableHotelsURL();
       this._httpClient
-        .get(apiUrl)
+        .get(URL)
         .subscribe((response: any) =>
         {
-          console.log("Se ejecuto el RQ");
-          console.log(response);
-          this.hotels = response.hotels;
+          this.hotels = response;
         });
     }
      else
@@ -53,6 +45,17 @@ export class DashboardComponent
       
     }
   }
-  
 
+  private buildAvailableHotelsURL() : string {
+    const formData = this.searchForm.value;
+    const checkInDateFormatted = this.datePipe.transform(formData.checkInDate, 'yyyy-MM-dd');
+    const checkOutDateFormatted = this.datePipe.transform(formData.checkOutDate, 'yyyy-MM-dd');
+    const city = formData.city?.trim().replaceAll(' ', '');
+    const guests = formData.guests?.trim().replaceAll(' ', '');
+    return this.API_URL +=
+      `destination=${city}
+      &guests=${guests}
+      &checkin=${checkInDateFormatted}
+      &checkout=${checkOutDateFormatted}`;
+  }
 }
