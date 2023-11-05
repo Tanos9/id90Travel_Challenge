@@ -5,25 +5,22 @@ class HotelsService
 {
     const SESSION_URI = '/api/v1/hotels.json?';
 
-    public function getHotels()
-    {
-        echo 'Get Hotels service example';
-    }
-
     public function getAvailableHotels($parameters)
     {
-        $URL = self::buildAvailableHotelsURL($parameters);
+        $URL = $this->buildAvailableHotelsURL($parameters);
         $hotelsResponse = json_decode($this->makeApiRequest($URL), true);
 
-        return self::filterHotelsProperties($hotelsResponse);
+        return $this->filterHotelsProperties($hotelsResponse);
     }
 
     private function filterHotelsProperties($hotelsResponse)
     {
         $hotels = $hotelsResponse['hotels'] ?? [];
 
-        return array_map(function ($hotel) {
-            return [
+        return array_map(function ($hotel)
+        {
+            return
+            [
                 'id' => $hotel['id'],
                 'name' => $hotel['name'],
                 'description' => $hotel['location_description'],

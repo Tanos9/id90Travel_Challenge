@@ -6,76 +6,55 @@ class LoginService
 {
     const SESSION_URI = '/session.json?';
 
-    public function login()
-    { 
+    public function login($parameters)
+    {
         $URL = Config::get('API_URL') . self::SESSION_URI;
-
-        $postData = [
-            'session[airline]' => 'HAWAIIAN AIRLINES (HA)',
-            'session[username]' => 'halucas',
-            'session[password]' => '123456',
-        ];
+        $postData = $this->createPostData($parameters);
 
         $response = $this->makeApiRequest($URL, $postData);
 
-        return json_decode($response, true);
+        return $this->filterLoginResponse($response);
     }
 
-    public function loginTest($parameters)
+    private function createPostData($parameters)
     {
-        $URL = Config::get('API_URL') . self::SESSION_URI;
-
         $airline = $parameters['airline'];
         $name = $parameters['username'];
         $password = $parameters['password'];
 
-        $postData =
+        return
         [
             'session[airline]' => $airline,
             'session[username]' => $name,
             'session[password]' => $password,
         ];
-
-        $response = $this->makeApiRequest($URL, $postData);
-
-        return self::filterLoginResponse($response);
     }
 
-private function filterLoginResponse($loginResponse)
-{
-    $decodedResponse = json_decode($loginResponse, true);
+    private function filterLoginResponse($loginResponse)
+    {
+        $decodedResponse = json_decode($loginResponse, true);
 
-    if (isset($decodedResponse['member']['id'])) {
-        $token = Config::get('TOKEN');
-        
-        $result = [
-            'id' => $decodedResponse['member']['id'],
-            'username' => $decodedResponse['member']['username'],
-            'token' => $token,
-        ];
-    } else {
-        $result = [
-            'error' => 'unauthorized',
-        ];
+        if (isset($decodedResponse['member']['id']))
+        {
+            $token = Config::get('TOKEN');
+            
+            $result =
+            [
+                'id' => $decodedResponse['member']['id'],
+                'username' => $decodedResponse['member']['username'],
+                'token' => $token,
+            ];
+        } 
+        else
+        {
+            $result =
+            [
+                'error' => 'unauthorized',
+            ];
+        }
+
+        return $result;
     }
-
-    return $result;
-}
-
-
-    // private function filterLoginResponse($loginResponse)
-    // {
-    //     $token = Config::get('TOKEN');
-
-    //     $response = json_decode($loginResponse);
-    //     $data = [
-    //         'id' => $response['member']['id'],
-    //         'username' => $response['member']['username'],
-    //         'token' => $token,
-    //     ];
-
-    //     echo $data;
-    // }
 
     private function makeApiRequest($URL, $postData)
     {

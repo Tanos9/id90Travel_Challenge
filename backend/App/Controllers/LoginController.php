@@ -14,20 +14,8 @@ class LoginController
         $this->authService = $authService;
     }
 
-    public function login()
-    {
-        $loginProperties = $this->loginService->login();
-
-        $result = [
-            'id' => $loginProperties['member']['id'],
-            'username' => $loginProperties['member']['username'],
-        ];
-
-        echo json_encode($result);
-    }
-
     public function loginTest($parameters)
     {
-        return $this->loginService->loginTest($parameters);
+        return $this->loginService->login($parameters);
     }
 }

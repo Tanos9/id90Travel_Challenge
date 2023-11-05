@@ -4,7 +4,7 @@
 class AuthService
 {
     private static $token;
-    
+
     public function validateToken()
     {
         $token = null;

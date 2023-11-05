@@ -45,6 +45,6 @@ Router::get(
         $container = App::getContainer();
         $airlinesService = $container->resolve('Services\AirlinesService');
         $airlinesController = new AirlinesController($airlinesService);
-        $airlinesController->getAirlinesNames();
+        $res->toJSON($airlinesController->getAirlinesNames());
     }
 );
