@@ -20,6 +20,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { DatePipe } from '@angular/common';
     MatButtonModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
    ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

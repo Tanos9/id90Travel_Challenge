@@ -5,6 +5,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import { AuthService } from '../services/auth-service';
+import { MatSnackBar} from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,7 @@ import { AuthService } from '../services/auth-service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  private API_AIRLINES_URL = '/api/airlines/names';
 
   airlines: Airline[] =
   [
@@ -37,6 +40,8 @@ export class LoginComponent {
     }
   ]
   filteredAirlines!: Observable<Airline[]> ;
+  snackBar!: MatSnackBar;
+  airlineControl = new FormControl();
 
   public loginForm = new FormGroup(
   {
@@ -45,39 +50,59 @@ export class LoginComponent {
       password: new FormControl('', [Validators.required])
   });
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private httpClient: HttpClient,
+    snackBar: MatSnackBar,
+    )
+  {
+    this.snackBar = snackBar;
+  }
+
+  ngOnInit() {
+    this.getAirlines();
+  }
 
   onAirlineSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedAirlineName = event.option.viewValue;
   }
 
-  // login() {
-  //   if (this.loginForm.valid) {
-  //     const formData = this.loginForm.value;
-  //     let isLoggedIn = this.authService.login(formData.username!, formData.password!, formData.airline!);
-  //     if (isLoggedIn)
-  //     {
-  //       this.router.navigate(['/dashboard']);
-  //     }
-  //  }
-  // }
-
-  login() {
-    if (this.loginForm.valid) {
-      const formData = this.loginForm.value;
-      this.authService.login(formData.username!, formData.password!, formData.airline!)
-        .subscribe(isLoggedIn => {
-          if (isLoggedIn) {
-            this.router.navigate(['/dashboard']);
-          }
-        });
-    }
+login() {
+  if (this.loginForm.valid) {
+    const formData = this.loginForm.value;
+    this.authService.login(formData.username!, formData.password!, formData.airline!)
+      .subscribe(isLoggedIn => {
+        if (isLoggedIn) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.openSnackBar('Invalid Credentials', 'OK');
+        }
+      });
   }
+}
 
-  private _filter(value: string): Airline[] {
-    const filterValue = value.toLowerCase();
+getAirlines() {
+  return this.httpClient
+    .get(this.API_AIRLINES_URL)
+    .subscribe((response: any) =>
+    {
+      this.airlines = response;
+    });
+}
 
-    return this.airlines
-      .filter(airline => airline.name.toLowerCase().indexOf(filterValue) === 0);
-  }
+openSnackBar(message: string, action: string) {
+  this.snackBar.open(message, action, {
+    duration: 3000,
+  });
+}
+
+private _filter(value: string): Airline[] {
+  const filterValue = value.toLowerCase();
+
+  return this.airlines.filter((airline) =>
+    airline.name.toLowerCase().includes(filterValue)
+  );
+}
+
 }
