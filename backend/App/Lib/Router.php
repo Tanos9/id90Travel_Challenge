@@ -5,7 +5,8 @@ class Router
 {
     public static function get($route, $callback)
     {
-        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'GET') !== 0) {
+        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'GET') !== 0)
+        {
             return;
         }
 
@@ -14,7 +15,8 @@ class Router
 
     public static function post($route, $callback)
     {
-        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') !== 0) {
+        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') !== 0)
+        {
             return;
         }
 

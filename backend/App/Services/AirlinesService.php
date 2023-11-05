@@ -12,7 +12,14 @@ class AirlinesService
         $response = $this->makeApiRequest($URL);
         $airlines = json_decode($response, true);
 
-        return $airlines;
+        return array_map(function ($airline)
+        {
+            return
+            [
+                'id' => $airline['id'],
+                'display_name' => $airline['display_name']
+            ];
+        }, $airlines);
     }
 
     private function makeApiRequest($url)

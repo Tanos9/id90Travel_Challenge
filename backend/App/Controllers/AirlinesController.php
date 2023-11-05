@@ -13,14 +13,6 @@ class AirlinesController
 
     public function getAirlinesNames()
     {
-        $airlines = $this->airlinesService->getAirlinesNames();
-        $filteredAirlines = array_map(function ($airline) {
-            return [
-                'id' => $airline['id'],
-                'display_name' => $airline['display_name']
-            ];
-        }, $airlines);
-
-        echo json_encode($filteredAirlines);
+        return $this->airlinesService->getAirlinesNames();
     }
 }
