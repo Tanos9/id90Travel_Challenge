@@ -51,15 +51,27 @@ export class LoginComponent {
     const selectedAirlineName = event.option.viewValue;
   }
 
+  // login() {
+  //   if (this.loginForm.valid) {
+  //     const formData = this.loginForm.value;
+  //     let isLoggedIn = this.authService.login(formData.username!, formData.password!, formData.airline!);
+  //     if (isLoggedIn)
+  //     {
+  //       this.router.navigate(['/dashboard']);
+  //     }
+  //  }
+  // }
+
   login() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
-      let isLoggedIn = this.authService.login(formData.username!, formData.password!, formData.airline!);
-      if (isLoggedIn)
-      {
-        this.router.navigate(['/dashboard']);
-      }
-   }
+      this.authService.login(formData.username!, formData.password!, formData.airline!)
+        .subscribe(isLoggedIn => {
+          if (isLoggedIn) {
+            this.router.navigate(['/dashboard']);
+          }
+        });
+    }
   }
 
   private _filter(value: string): Airline[] {

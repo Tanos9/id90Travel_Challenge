@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class DashboardComponent
 {
   private API_URL = '/api/hotels?';
+  today=new Date();
   public searchForm = new FormGroup(
   {
     city: new FormControl('', [Validators.required]),
@@ -23,7 +25,8 @@ export class DashboardComponent
     
   constructor(
   private _httpClient: HttpClient,
-  private datePipe: DatePipe)
+  private datePipe: DatePipe,
+  private authService: AuthService)
   {
   }
 
@@ -32,8 +35,15 @@ export class DashboardComponent
     if (this.searchForm.valid)
     {
       const URL = this.buildAvailableHotelsURL();
+      const token = this.authService.getToken();
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': token!
+        })
+      };
+      
       this._httpClient
-        .get(URL)
+        .get(URL, httpOptions)
         .subscribe((response: any) =>
         {
           this.hotels = response;
