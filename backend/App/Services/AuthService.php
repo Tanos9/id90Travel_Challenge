@@ -5,6 +5,13 @@ class AuthService
 {
     private static $token;
 
+    private $config;
+
+    public function __construct(string $config)
+    {
+        $this->config = $config;
+    }
+
     public function validateToken()
     {
         $token = null;
@@ -12,7 +19,7 @@ class AuthService
         {
             $token = $_SERVER['HTTP_AUTHORIZATION'];
         }
-        return $token == Config::get('TOKEN');
+        return $token == $this->config;
     }
 
     public function generateUnauthorizedError()
