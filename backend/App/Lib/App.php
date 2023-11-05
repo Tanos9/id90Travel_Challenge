@@ -68,7 +68,7 @@ class App
             "Services\AuthService",
             function ()
             {
-                return new AuthService();
+                return new AuthService(Config::get('TOKEN'));
             }
         );
 
