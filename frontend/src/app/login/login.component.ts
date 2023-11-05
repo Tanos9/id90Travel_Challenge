@@ -22,6 +22,7 @@ export class LoginComponent {
   filteredAirlines!: Observable<Airline[] | undefined>;
   snackBar!: MatSnackBar;
   airlineControl = new FormControl();
+  isLoading = false;
 
   public loginForm = new FormGroup(
   {
@@ -52,9 +53,11 @@ export class LoginComponent {
  
   login() {
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const formData = this.loginForm.value;
       this.authService.login(formData.username!, formData.password!, formData.airline!)
         .subscribe(isLoggedIn => {
+          this.isLoading = false;
           if (isLoggedIn) {
             this.router.navigate(['/dashboard']);
           } else {

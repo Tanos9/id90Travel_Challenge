@@ -21,7 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     MatFormFieldModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule, 
+    MatProgressSpinnerModule
    ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
