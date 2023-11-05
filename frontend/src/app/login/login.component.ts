@@ -18,28 +18,8 @@ export class LoginComponent {
 
   airlines: Airline[] =
   [
-    {
-       id: 1,
-       name: 'Aerolinea 1'
-    },
-    {
-       id: 2,
-       name: 'Aerolinea 2'
-    },
-    {
-       id: 3,
-       name: 'Aerolinea 3'
-    },
-    {
-       id: 4,
-       name: 'Aerolinea 4'
-    },
-    {
-       id: 5,
-       name: 'Aerolinea 5 '
-    }
   ]
-  filteredAirlines!: Observable<Airline[]> ;
+  filteredAirlines!: Observable<Airline[]>;
   snackBar!: MatSnackBar;
   airlineControl = new FormControl();
 
@@ -62,12 +42,14 @@ export class LoginComponent {
 
   ngOnInit() {
     this.getAirlines();
+    this.filteredAirlines = this.airlineControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
-  onAirlineSelected(event: MatAutocompleteSelectedEvent): void {
-    const selectedAirlineName = event.option.viewValue;
-  }
-
+ 
 login() {
   if (this.loginForm.valid) {
     const formData = this.loginForm.value;
@@ -82,12 +64,13 @@ login() {
   }
 }
 
-getAirlines() {
+public getAirlines() {
   return this.httpClient
     .get(this.API_AIRLINES_URL)
     .subscribe((response: any) =>
     {
       this.airlines = response;
+      console.log(this.airlines);
     });
 }
 
@@ -100,9 +83,8 @@ openSnackBar(message: string, action: string) {
 private _filter(value: string): Airline[] {
   const filterValue = value.toLowerCase();
 
-  return this.airlines.filter((airline) =>
-    airline.name.toLowerCase().includes(filterValue)
-  );
+  return this.airlines.filter(airline => airline.display_name.toLowerCase().includes(filterValue));
 }
+
 
 }

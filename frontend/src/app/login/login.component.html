@@ -1,4 +1,4 @@
-<mat-card>
+<!-- <mat-card>
   <mat-card-header>
     <mat-card-title>User Login</mat-card-title>
   </mat-card-header>
@@ -20,8 +20,41 @@
           [matAutocomplete]="auto"
         />
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <mat-option *ngFor="let airline of filteredAirlines | async | slice: 0:3" [value]="airline.name">
-            {{ airline.name }}
+          <mat-option *ngFor="let airline of filteredAirlines | async | slice: 0:3" [value]="airline.display_name">
+            {{ airline.display_name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
+    </form>
+  </mat-card-content>
+</mat-card> -->
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>User Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field>
+        <input matInput formControlName="username" placeholder="Username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="password" formControlName="password" placeholder="Password">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Search/type Airline"
+          formControlName="airline"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let airline of airlines" [value]="airline.display_name">
+            {{ airline.display_name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -30,3 +63,4 @@
     </form>
   </mat-card-content>
 </mat-card>
+
