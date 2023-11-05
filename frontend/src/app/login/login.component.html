@@ -48,18 +48,18 @@
       <mat-form-field>
         <input
           matInput
-          placeholder="Search/type Airline"
-          formControlName="airline"
+          placeholder="Search Airline"
+          [formControl]="airlineControl"
           [matAutocomplete]="auto"
         />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <mat-option *ngFor="let airline of airlines" [value]="airline.display_name">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onAirlineSelected($event)">
+          <mat-option *ngFor="let airline of filteredAirlines | async | slice: 0:3" [value]="airline.display_name">
             {{ airline.display_name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
+      <button mat-raised-button color="primary" type="submit" (onClick)="login()">Iniciar sesión</button>
     </form>
   </mat-card-content>
 </mat-card>

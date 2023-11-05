@@ -19,7 +19,7 @@ export class LoginComponent {
   airlines: Airline[] =
   [
   ]
-  filteredAirlines!: Observable<Airline[]>;
+  filteredAirlines!: Observable<Airline[] | undefined>;
   snackBar!: MatSnackBar;
   airlineControl = new FormControl();
 
@@ -50,41 +50,46 @@ export class LoginComponent {
   }
 
  
-login() {
-  if (this.loginForm.valid) {
-    const formData = this.loginForm.value;
-    this.authService.login(formData.username!, formData.password!, formData.airline!)
-      .subscribe(isLoggedIn => {
-        if (isLoggedIn) {
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.openSnackBar('Invalid Credentials', 'OK');
-        }
+  login() {
+    if (this.loginForm.valid) {
+      const formData = this.loginForm.value;
+      this.authService.login(formData.username!, formData.password!, formData.airline!)
+        .subscribe(isLoggedIn => {
+          if (isLoggedIn) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.openSnackBar('Invalid Credentials', 'OK');
+          }
+        });
+    }
+  }
+
+  public getAirlines() {
+    return this.httpClient
+      .get(this.API_AIRLINES_URL)
+      .subscribe((response: any) =>
+      {
+        this.airlines = response;
       });
   }
-}
 
-public getAirlines() {
-  return this.httpClient
-    .get(this.API_AIRLINES_URL)
-    .subscribe((response: any) =>
-    {
-      this.airlines = response;
-      console.log(this.airlines);
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
     });
-}
+  }
 
-openSnackBar(message: string, action: string) {
-  this.snackBar.open(message, action, {
-    duration: 3000,
-  });
-}
+  private _filter(value: string): Airline[] {
+    const filterValue = value.toLowerCase();
 
-private _filter(value: string): Airline[] {
-  const filterValue = value.toLowerCase();
+    return this.airlines.filter(airline =>
+      airline.display_name.toLowerCase().includes(filterValue)
+    );
+  }
 
-  return this.airlines.filter(airline => airline.display_name.toLowerCase().includes(filterValue));
-}
-
-
+  onAirlineSelected(event: MatAutocompleteSelectedEvent): void {
+    const selectedAirlineName = event.option.viewValue;
+    const selectedAirline = this.airlines.find(airline => airline.display_name === selectedAirlineName);
+    this.loginForm.get('airline')!.setValue(selectedAirline!.display_name);
+  }
 }
