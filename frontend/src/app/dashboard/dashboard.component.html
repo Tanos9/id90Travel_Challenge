@@ -21,7 +21,7 @@
     </mat-form-field>
   
     <button mat-raised-button color="primary" type="submit" [disabled]="searchForm.invalid || isLoading">Search</button>
-    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="20"></mat-progress-spinner>
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="50"></mat-progress-spinner>
 
 </form>
 
@@ -29,10 +29,10 @@
     <mat-card-title>{{ hotel.name }}</mat-card-title>
     <mat-card-content>
       <p>{{ hotel.description }}</p>
-      <p>{{ hotel.checkin }}</p>
-      <p>{{ hotel.checkout }}</p>
-      <p>{{ hotel.type }}</p>
-      <p>{{ hotel.total | currency }}</p>
+      <p>Checkin: {{ hotel.checkin }}</p>
+      <p>Checkout: {{ hotel.checkout }}</p>
+      <p>Type: {{ hotel.type }}</p>
+      <p>Total: {{ hotel.total | currency }}</p>
     </mat-card-content>
 </mat-card>
 
