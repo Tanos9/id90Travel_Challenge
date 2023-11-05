@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Airline } from '../models/airline.model';
 import { Router } from '@angular/router';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
+import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -11,21 +12,6 @@ import { Observable, map, startWith } from 'rxjs';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  ngOnInit(){
-    this.filteredAirlines = this.airlineControl.valueChanges
-      .pipe(
-        startWith(''),
-        map((value: string) => this._filter(value))
-      );
-  }
-
-  private _filter(value: string): Airline[] {
-    const filterValue = value.toLowerCase();
-
-    return this.airlines
-      .filter(airline => airline.name.toLowerCase().indexOf(filterValue) === 0);
-  }
 
   airlines: Airline[] =
   [
@@ -51,16 +37,42 @@ export class LoginComponent implements OnInit {
     }
   ]
   filteredAirlines!: Observable<Airline[]> ;
-  airlineControl = new FormControl();
 
-  constructor(private router: Router) {}
+  public loginForm = new FormGroup(
+  {
+      airline: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+  });
 
+  ngOnInit(){
+    // this.filteredAirlines = this.airlineControl.valueChanges.pipe(
+    //   startWith(''),
+    //   map((value: string) => this._filter(value))
+    // );
+  }
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   onAirlineSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedAirlineName = event.option.viewValue;
   }
 
   login() {
-      this.router.navigate(['/dashboard']);
+    if (this.loginForm.valid) {
+      const formData = this.loginForm.value;
+      let isLoggedIn = this.authService.login(formData.username!, formData.password!, formData.airline!);
+      if (isLoggedIn)
+      {
+        this.router.navigate(['/dashboard']);
+      }
    }
+  }
+
+  private _filter(value: string): Airline[] {
+    const filterValue = value.toLowerCase();
+
+    return this.airlines
+      .filter(airline => airline.name.toLowerCase().indexOf(filterValue) === 0);
+  }
 }

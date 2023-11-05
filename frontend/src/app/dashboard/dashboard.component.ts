@@ -22,7 +22,6 @@ export class DashboardComponent
   hotels: any[] = [];
     
   constructor(
-  private _fb: FormBuilder,
   private _httpClient: HttpClient,
   private datePipe: DatePipe)
   {
