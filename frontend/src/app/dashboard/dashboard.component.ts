@@ -12,7 +12,8 @@ import { AuthService } from '../services/auth-service';
 export class DashboardComponent
 {
   private API_URL = '/api/hotels?';
-  today=new Date();
+  today= new Date();
+  isLoading = false;
   public searchForm = new FormGroup(
   {
     city: new FormControl('', [Validators.required]),
@@ -34,6 +35,7 @@ export class DashboardComponent
     this.hotels = [];
     if (this.searchForm.valid)
     {
+      this.isLoading = true;
       const URL = this.buildAvailableHotelsURL();
       const token = this.authService.getToken();
       const httpOptions = {
@@ -46,6 +48,7 @@ export class DashboardComponent
         .get(URL, httpOptions)
         .subscribe((response: any) =>
         {
+          this.isLoading = false;
           this.hotels = response;
         });
     }
