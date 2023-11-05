@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth-service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   airlines: Airline[] =
   [
@@ -44,13 +44,6 @@ export class LoginComponent implements OnInit {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
   });
-
-  ngOnInit(){
-    // this.filteredAirlines = this.airlineControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value: string) => this._filter(value))
-    // );
-  }
 
   constructor(private router: Router, private authService: AuthService) {}
 
