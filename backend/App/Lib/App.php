@@ -2,6 +2,7 @@
 
 use App\Core\Container;
 use App\Services\AirlinesService;
+use App\Services\AuthService;
 use App\Services\HotelsService;
 use App\Services\LoginService;
 
@@ -60,6 +61,14 @@ class App
             function ()
             {
                 return new LoginService();
+            }
+        );
+
+        $container->bind(
+            "Services\AuthService",
+            function ()
+            {
+                return new AuthService();
             }
         );
 
