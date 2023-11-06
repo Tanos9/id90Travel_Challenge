@@ -54,39 +54,4 @@ export class AuthService {
         })
       );
   }
-
-  
-
-//   login(username: string, password: string, airline: string): boolean {
-//     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-//     const credentialsData = {
-//         airline: airline,
-//         username: username,
-//         password: password
-//     };
-
-//     const body = JSON.stringify(credentialsData);
-//     console.log(body);
-
-//     const httpOptions = {
-//         headers: new HttpHeaders({
-//           'Content-Type': 'application/json'
-//         })
-//       };
-
-//     this._httpClient
-//         .post(this.API_URL, body, httpOptions)
-//         .subscribe((response: any) =>
-//         {
-//             console.log(response)
-//             if(response.token)
-//             {
-//                 this.isLoggedIn = true;
-//                 this.token = response.token
-//             }
-//         });
-    
-//     return this.isLoggedIn;
-//   }
 }
