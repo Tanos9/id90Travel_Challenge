@@ -1,14 +1,21 @@
 <?php namespace App\Services;
-      use App\Lib\Config;
+      use App\Interfaces\iApiService;
 
 class HotelsService
 {
     const SESSION_URI = '/api/v1/hotels.json?';
 
+    private $apiService;
+
+    public function __construct(iApiService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
+
     public function getAvailableHotels($parameters)
     {
-        $URL = $this->buildAvailableHotelsURL($parameters);
-        $hotelsResponse = json_decode($this->makeApiRequest($URL), true);
+        $URI = $this->buildAvailableHotelsURI($parameters);
+        $hotelsResponse = json_decode($this->apiService->getApiRequest($URI), true);
 
         return $this->filterHotelsProperties($hotelsResponse);
     }
@@ -34,29 +41,14 @@ class HotelsService
         }, $hotels);
     }
 
-    private function buildAvailableHotelsURL($parameters)
+    private function buildAvailableHotelsURI($parameters)
     {
-        $URL = Config::get('API_URL') . self::SESSION_URI;
-        $URL .= 'destination=' .$parameters['destination'];
-        $URL .= '&guests[]=' .$parameters['guests'];
-        $URL .= '&checkin=' .$parameters['checkin'];
-        $URL .= '&checkout=' .$parameters['checkout'];
+        $URI = self::SESSION_URI;
+        $URI .= 'destination=' .$parameters['destination'];
+        $URI .= '&guests[]=' .$parameters['guests'];
+        $URI .= '&checkin=' .$parameters['checkin'];
+        $URI .= '&checkout=' .$parameters['checkout'];
 
-        return $URL;
-    }
-
-    private function makeApiRequest($url)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-
-        if ($e = curl_error($ch))
-        {
-            echo $e;
-        }
-        curl_close($ch);
-
-        return $response;
+        return $URI;
     }
 }

@@ -1,17 +1,24 @@
 <?php namespace App\Services;
 
+use App\Interfaces\iApiService;
 use App\Lib\Config;
 
 class LoginService
 {
     const SESSION_URI = '/session.json?';
 
+    private $apiService;
+
+    public function __construct(iApiService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
+
     public function login($parameters)
     {
-        $URL = Config::get('API_URL') . self::SESSION_URI;
         $postData = $this->createPostData($parameters);
 
-        $response = $this->makeApiRequest($URL, $postData);
+        $response = $this->apiService->postApiRequest(self::SESSION_URI, $postData);
 
         return $this->filterLoginResponse($response);
     }
@@ -54,18 +61,5 @@ class LoginService
         }
 
         return $result;
-    }
-
-    private function makeApiRequest($URL, $postData)
-    {
-        $ch = curl_init($URL);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        return $response;
     }
 }

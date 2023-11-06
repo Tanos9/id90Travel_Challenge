@@ -3,17 +3,17 @@
 use PHPUnit\Framework\TestCase;
 use App\Services\AuthService;
 
-class AuthServiceTest extends TestCase
+class AuthServiceTests extends TestCase
 {
-    public function testValidateTokenWithValidToken()
+    public function test_validateToken_returnsTrue_withValidToken()
     {
         // Arrange
         $token = 'mySecretToken';
-        $authService = new AuthService($token);
+        $sut = new AuthService($token);
         $_SERVER['HTTP_AUTHORIZATION'] = 'mySecretToken';
     
         // Act
-        $result = $authService->validateToken();
+        $result = $sut->validateToken();
     
         // Assert
         $this->assertTrue($result);

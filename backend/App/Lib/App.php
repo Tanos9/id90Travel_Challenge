@@ -2,6 +2,7 @@
 
 use App\Core\Container;
 use App\Services\AirlinesService;
+use App\Services\ApiService;
 use App\Services\AuthService;
 use App\Services\HotelsService;
 use App\Services\LoginService;
@@ -44,7 +45,9 @@ class App
             "Services\HotelsService",
             function ()
             {
-                return new HotelsService();
+                return new HotelsService(
+                    new ApiService(Config::get('API_URL'))
+                );
             }
         );
 
@@ -52,7 +55,9 @@ class App
             "Services\AirlinesService",
             function ()
             {
-                return new AirlinesService();
+                return new AirlinesService(
+                    new ApiService(Config::get('API_URL'))
+                );
             }
         );
 
@@ -60,7 +65,9 @@ class App
             "Services\LoginService",
             function ()
             {
-                return new LoginService();
+                return new LoginService(
+                    new ApiService(Config::get('API_URL'))
+                );
             }
         );
 

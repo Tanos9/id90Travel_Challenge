@@ -1,5 +1,4 @@
 <?php namespace App\Services;
-      use App\Lib\Config;
 
 class AuthService
 {
