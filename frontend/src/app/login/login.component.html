@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>User Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field>
+        <input matInput formControlName="username" placeholder="Username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="password" formControlName="password" placeholder="Password">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Type to search Airline" [formControl]="airlineControl" [matAutocomplete]="auto" />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onAirlineSelected($event)">
+          <mat-option *ngFor="let airline of filteredAirlines | async | slice: 0:3" [value]="airline.display_name">
+            {{ airline.display_name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading">
+        Iniciar sesión
+        <mat-progress-spinner *ngIf="isLoading" mode="indeterminate" diameter="20"></mat-progress-spinner>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,13 @@
+mat-card {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+  }
+
+
+  button {
+    width: 100%;
+    margin-top: 20px;
+  }
